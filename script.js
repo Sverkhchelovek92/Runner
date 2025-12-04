@@ -14,8 +14,6 @@ document.body.appendChild(renderer.domElement)
 
 const gameInstance = new Game(scene, camera)
 
-camera.position.z = 5
-
 function animate() {
   gameInstance.update()
 
