@@ -27,12 +27,9 @@ class Game {
 
   gameOver() {}
 
-  initializeScene() {
-    // const geometry = new THREE.BoxGeometry(1, 1, 1)
-    // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    // this.cube = new THREE.Mesh(geometry, material)
-    // scene.add(this.cube)
+  createGrid(scene) {}
 
+  createShip(scene) {
     const shipBody = new THREE.Mesh(
       new THREE.TetrahedronBufferGeometry(0.4),
       new THREE.MeshBasicMaterial({ color: 0xcf0e3e })
@@ -45,10 +42,6 @@ class Game {
     this.ship.add(shipBody)
 
     scene.add(this.ship)
-
-    camera.position.z = 5
-    camera.rotateX((-20 * Math.PI) / 180)
-    camera.position.set(0, 1.5, 2)
 
     const reactorSocketGeometry = new THREE.CylinderBufferGeometry(
       0.08,
@@ -103,5 +96,13 @@ class Game {
     reactorLight1.position.set(-0.15, 0, 0.11)
     reactorLight2.rotateX((90 * Math.PI) / 180)
     reactorLight2.position.set(0.15, 0, 0.11)
+  }
+
+  initializeScene() {
+    this.createShip(scene)
+
+    camera.position.z = 5
+    camera.rotateX((-20 * Math.PI) / 180)
+    camera.position.set(0, 1.5, 2)
   }
 }
