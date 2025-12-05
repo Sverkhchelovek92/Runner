@@ -49,5 +49,59 @@ class Game {
     camera.position.z = 5
     camera.rotateX((-20 * Math.PI) / 180)
     camera.position.set(0, 1.5, 2)
+
+    const reactorSocketGeometry = new THREE.CylinderBufferGeometry(
+      0.08,
+      0.08,
+      0.1,
+      16
+    )
+    const reactorSocketMaterial = new THREE.MeshBasicMaterial({
+      color: 0x1a1918,
+    })
+
+    const reactorSocket1 = new THREE.Mesh(
+      reactorSocketGeometry,
+      reactorSocketMaterial
+    )
+    const reactorSocket2 = new THREE.Mesh(
+      reactorSocketGeometry,
+      reactorSocketMaterial
+    )
+
+    this.ship.add(reactorSocket1)
+    this.ship.add(reactorSocket2)
+
+    reactorSocket1.rotateX((90 * Math.PI) / 180)
+    reactorSocket1.position.set(-0.15, 0, 0.1)
+    reactorSocket2.rotateX((90 * Math.PI) / 180)
+    reactorSocket2.position.set(0.15, 0, 0.1)
+
+    const reactorLightGeometry = new THREE.CylinderBufferGeometry(
+      0.055,
+      0.055,
+      0.1,
+      16
+    )
+    const reactorLightMaterial = new THREE.MeshBasicMaterial({
+      color: 0xf7f399,
+    })
+
+    const reactorLight1 = new THREE.Mesh(
+      reactorLightGeometry,
+      reactorLightMaterial
+    )
+    const reactorLight2 = new THREE.Mesh(
+      reactorLightGeometry,
+      reactorLightMaterial
+    )
+
+    this.ship.add(reactorLight1)
+    this.ship.add(reactorLight2)
+
+    reactorLight1.rotateX((90 * Math.PI) / 180)
+    reactorLight1.position.set(-0.15, 0, 0.11)
+    reactorLight2.rotateX((90 * Math.PI) / 180)
+    reactorLight2.position.set(0.15, 0, 0.11)
   }
 }
