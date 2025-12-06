@@ -27,7 +27,64 @@ class Game {
 
   gameOver() {}
 
-  createGrid(scene) {}
+  createGrid(scene) {
+    let division = 30
+    let limit = 200
+    this.grid = new THREE.GridHelper(limit * 2, division, 'blue', 'blue')
+
+    const moveableZ = []
+    for (let i = 0; i <= division; i++) {
+      moveableZ.push(1, 1, 0, 0) // move horizontal lines only (1 - point is moveable)
+    }
+    this.grid.geometry.addAttribute(
+      'moveableZ',
+      new THREE.BufferAttribute(new Uint8Array(moveableZ), 1)
+    )
+    this.grid.material = new THREE.ShaderMaterial({
+      uniforms: {
+        time: {
+          value: 0,
+        },
+        limits: {
+          value: new THREE.Vector2(-limit, limit),
+        },
+        speedZ: {
+          value: this.speedZ,
+        },
+      },
+      vertexShader: `
+    uniform float time;
+    uniform vec2 limits;
+    uniform float speed;
+    
+    attribute float moveableZ;
+    
+    varying vec3 vColor;
+  
+    void main() {
+      vColor = color;
+      float limLen = limits.y - limits.x;
+      vec3 pos = position;
+      if (floor(moveable + 0.5) > 0.5){ // if a point has "moveable" attribute = 1 
+        float dist = speed * time;
+        float currPos = mod((pos.z + dist) - limits.x, limLen) + limits.x;
+        pos.z = currPos;
+      } 
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
+    }
+  `,
+      fragmentShader: `
+    varying vec3 vColor;
+  
+    void main() {
+      gl_FragColor = vec4(vColor, 1.);
+    }
+  `,
+      vertexColors: THREE.VertexColors,
+    })
+
+    scene.add(grid)
+  }
 
   createShip(scene) {
     const shipBody = new THREE.Mesh(
