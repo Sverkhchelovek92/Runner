@@ -10,6 +10,8 @@ class Game {
     // this.cube.rotation.x += 0.01
     // this.cube.rotation.y += 0.01
 
+    this.time += this.clock.getDelta()
+
     this.updateGrid()
     this.checkCollision()
     this.updateInfo()
@@ -19,7 +21,9 @@ class Game {
 
   _keyup() {}
 
-  updateGrid() {}
+  updateGrid() {
+    this.grid.material.uniforms.time.value = this.time
+  }
 
   checkCollision() {}
 
@@ -28,7 +32,7 @@ class Game {
   gameOver() {}
 
   createGrid(scene) {
-    let division = 30
+    let division = 100
     let limit = 200
     this.grid = new THREE.GridHelper(limit * 2, division, 'blue', 'blue')
 
@@ -42,14 +46,14 @@ class Game {
     )
     this.grid.material = new THREE.ShaderMaterial({
       uniforms: {
+        speedZ: {
+          value: 5,
+        },
         time: {
           value: 0,
         },
         limits: {
           value: new THREE.Vector2(-limit, limit),
-        },
-        speedZ: {
-          value: this.speedZ,
         },
       },
       vertexShader: `
@@ -84,6 +88,9 @@ class Game {
     })
 
     scene.add(this.grid)
+
+    this.time = 0
+    this.clock = new THREE.Clock()
   }
 
   createShip(scene) {
