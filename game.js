@@ -36,7 +36,7 @@ class Game {
     for (let i = 0; i <= division; i++) {
       moveableZ.push(1, 1, 0, 0) // move horizontal lines only (1 - point is moveable)
     }
-    this.grid.geometry.addAttribute(
+    this.grid.geometry.setAttribute(
       'moveableZ',
       new THREE.BufferAttribute(new Uint8Array(moveableZ), 1)
     )
@@ -55,7 +55,7 @@ class Game {
       vertexShader: `
     uniform float time;
     uniform vec2 limits;
-    uniform float speed;
+    uniform float speedZ;
     
     attribute float moveableZ;
     
@@ -65,10 +65,10 @@ class Game {
       vColor = color;
       float limLen = limits.y - limits.x;
       vec3 pos = position;
-      if (floor(moveable + 0.5) > 0.5){ // if a point has "moveable" attribute = 1 
-        float dist = speed * time;
-        float currPos = mod((pos.z + dist) - limits.x, limLen) + limits.x;
-        pos.z = currPos;
+      if (floor(moveableZ + 0.5) > 0.5){ // if a point has "moveable" attribute = 1 
+        float zDist = speedZ * time;
+        float currZPos = mod((pos.z + zDist) - limits.x, limLen) + limits.x;
+        pos.z = currZPos;
       } 
       gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
     }
@@ -83,7 +83,7 @@ class Game {
       vertexColors: THREE.VertexColors,
     })
 
-    scene.add(grid)
+    scene.add(this.grid)
   }
 
   createShip(scene) {
@@ -157,6 +157,7 @@ class Game {
 
   initializeScene() {
     this.createShip(scene)
+    this.createGrid(scene)
 
     camera.position.z = 5
     camera.rotateX((-20 * Math.PI) / 180)
