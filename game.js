@@ -1,6 +1,7 @@
 class Game {
   OBSTACLE_PREFAB = new THREE.BoxBufferGeometry(1, 1, 1)
   OBSTACLE_MATERIAL = new THREE.MeshBasicMaterial({ color: 0xf252ad })
+  BONUS_PREFAB = new THREE.SphereBufferGeometry(1, 12, 12)
 
   constructor(scene, camera) {
     this.initializeScene(scene, camera)
@@ -172,6 +173,9 @@ class Game {
     for (let i = 0; i < 10; i++) {
       this.spawnObstacle()
     }
+    for (let i = 0; i < 10; i++) {
+      this.spawnBonus()
+    }
 
     camera.position.z = 5
     camera.rotateX((-20 * Math.PI) / 180)
@@ -200,9 +204,40 @@ class Game {
     )
   }
 
-  spawnBonus() {}
+  spawnBonus() {
+    const obj = new THREE.Mesh(
+      this.BONUS_PREFAB,
+      new THREE.MeshBasicMaterial({ color: 0x000000 })
+    )
+    this.setupBonus(obj)
+
+    this.objectsParent.add(obj)
+  }
+
+  setupBonus(obj, refXPos = 0, refZPos = 0) {
+    const price = this.randomInt(5, 20)
+    const ratio = price / 20
+
+    const size = ratio * 0.5
+    obj.scale.set(size, size, size)
+
+    const hue = 0.5 + 0.5 * ratio
+    obj.material.color.setHSL(hue, 1, 0.5)
+
+    obj.position.set(
+      refXPos + this.randomFloat(-30, 30),
+      obj.scale.y * 0.5,
+      refZPos - 100 - this.randomFloat(0, 100)
+    )
+  }
 
   randomFloat(min, max) {
+    return Math.random() * (max - min) + min
+  }
+
+  randomInt(min, max) {
+    min = Math.ceil(min)
+    max = Math.floor(max)
     return Math.random() * (max - min) + min
   }
 }
