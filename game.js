@@ -186,7 +186,23 @@ class Game {
     this.objectsParent.add(obj)
   }
 
-  setupObstacle(obj) {}
+  setupObstacle(obj, refXPos = 0, refZPos = 0) {
+    obj.scale.set(
+      this.randomFloat(0.5, 2),
+      this.randomFloat(0.5, 2),
+      this.randomFloat(0.5, 2)
+    )
+
+    obj.position.set(
+      refXPos + this.randomFloat(-30, 30),
+      obj.scale.y * 0.5,
+      refZPos - 100 - this.randomFloat(0, 100)
+    )
+  }
 
   spawnBonus() {}
+
+  randomFloat(min, max) {
+    return Math.random() * (max - min) + min
+  }
 }
