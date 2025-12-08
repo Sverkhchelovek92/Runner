@@ -1,4 +1,7 @@
 class Game {
+  OBSTACLE_PREFAB = new THREE.BoxBufferGeometry(1, 1, 1)
+  OBSTACLE_MATERIAL = new THREE.MeshBasicMaterial({ color: 0xf252ad })
+
   constructor(scene, camera) {
     this.initializeScene(scene, camera)
 
@@ -7,9 +10,6 @@ class Game {
     document.addEventListener('keyup', this._keyup.bind(this))
   }
   update() {
-    // this.cube.rotation.x += 0.01
-    // this.cube.rotation.y += 0.01
-
     this.time += this.clock.getDelta()
 
     this.updateGrid()
@@ -166,8 +166,27 @@ class Game {
     this.createShip(scene)
     this.createGrid(scene)
 
+    this.objectsParent = new THREE.Group()
+    scene.add(this.objectsParent)
+
+    for (let i = 0; i < 10; i++) {
+      this.spawnObstacle()
+    }
+
     camera.position.z = 5
     camera.rotateX((-20 * Math.PI) / 180)
     camera.position.set(0, 1.5, 2)
   }
+
+  spawnObstacle() {
+    const obj = new THREE.Mesh(this.OBSTACLE_PREFAB, this.OBSTACLE_MATERIAL)
+
+    this.setupObstacle(obj)
+
+    this.objectsParent.add(obj)
+  }
+
+  setupObstacle(obj) {}
+
+  spawnBonus() {}
 }
