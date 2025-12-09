@@ -4,7 +4,7 @@ class Game {
   BONUS_PREFAB = new THREE.SphereBufferGeometry(1, 12, 12)
 
   constructor(scene, camera) {
-    this.speedZ = 5
+    this.speedZ = 15
 
     this.initializeScene(scene, camera)
 
@@ -27,6 +27,24 @@ class Game {
   updateGrid() {
     this.grid.material.uniforms.time.value = this.time
     this.objectsParent.position.z = this.speedZ * this.time
+
+    this.objectsParent.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        const childZPos = child.position.z + this.objectsParent.position.z
+        if (childZPos > 0) {
+          const params = [
+            child,
+            this.ship.position.x,
+            -this.objectsParent.position.z,
+          ]
+          if (child.userData.type === 'obstacle') {
+            this.setupObstacle(...params)
+          } else {
+            this.setupBonus(...params)
+          }
+        }
+      }
+    })
   }
 
   checkCollision() {}
@@ -189,6 +207,7 @@ class Game {
     const obj = new THREE.Mesh(this.OBSTACLE_PREFAB, this.OBSTACLE_MATERIAL)
 
     this.setupObstacle(obj)
+    obj.userData = { type: 'obstacle' }
 
     this.objectsParent.add(obj)
   }
@@ -213,6 +232,7 @@ class Game {
       new THREE.MeshBasicMaterial({ color: 0x000000 })
     )
     this.setupBonus(obj)
+    obj.userData = { type: 'bonus' }
 
     this.objectsParent.add(obj)
   }
