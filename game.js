@@ -6,6 +6,8 @@ class Game {
   constructor(scene, camera) {
     this.initializeScene(scene, camera)
 
+    this.speedZ = 5
+
     //bind callbacks
     document.addEventListener('keydown', this._keydown.bind(this))
     document.addEventListener('keyup', this._keyup.bind(this))
@@ -24,6 +26,7 @@ class Game {
 
   updateGrid() {
     this.grid.material.uniforms.time.value = this.time
+    this.objectsParent.position.z = this.speedZ * this.time
   }
 
   checkCollision() {}
