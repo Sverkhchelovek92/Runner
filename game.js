@@ -4,9 +4,9 @@ class Game {
   BONUS_PREFAB = new THREE.SphereBufferGeometry(1, 12, 12)
 
   constructor(scene, camera) {
-    this.initializeScene(scene, camera)
-
     this.speedZ = 5
+
+    this.initializeScene(scene, camera)
 
     //bind callbacks
     document.addEventListener('keydown', this._keydown.bind(this))
@@ -51,7 +51,7 @@ class Game {
     this.grid.material = new THREE.ShaderMaterial({
       uniforms: {
         speedZ: {
-          value: 5,
+          value: this.speedZ,
         },
         time: {
           value: 0,
