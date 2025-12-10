@@ -6,6 +6,7 @@ class Game {
   constructor(scene, camera) {
     this.speedZ = 15
     this.speedX = 0
+    this.translateX = 0
 
     this.initializeScene(scene, camera)
 
@@ -15,6 +16,8 @@ class Game {
   }
   update() {
     this.time += this.clock.getDelta()
+
+    this.translateX += this.speedX * -0.05
 
     this.updateGrid()
     this.checkCollision()
@@ -35,7 +38,9 @@ class Game {
     }
   }
 
-  _keyup() {}
+  _keyup() {
+    this.speedX = 0
+  }
 
   updateGrid() {
     this.grid.material.uniforms.time.value = this.time
