@@ -5,6 +5,7 @@ class Game {
 
   constructor(scene, camera) {
     this.speedZ = 15
+    this.speedX = 0
 
     this.initializeScene(scene, camera)
 
@@ -20,7 +21,19 @@ class Game {
     this.updateInfo()
   }
 
-  _keydown(event) {}
+  _keydown(event) {
+    let newSpeedX
+    switch (event.key) {
+      case 'ArrowLeft':
+        newSpeedX = -1.0
+        break
+      case 'ArrowRight':
+        newSpeedX = 1
+        break
+      default:
+        return
+    }
+  }
 
   _keyup() {}
 
