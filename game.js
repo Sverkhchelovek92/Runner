@@ -36,6 +36,8 @@ class Game {
       default:
         return
     }
+
+    this.speedX = newSpeedX
   }
 
   _keyup() {
@@ -45,6 +47,9 @@ class Game {
   updateGrid() {
     this.grid.material.uniforms.time.value = this.time
     this.objectsParent.position.z = this.speedZ * this.time
+
+    this.grid.material.uniforms.translateX.value = this.translateX
+    this.objectsParent.position.x = this.translateX
 
     this.objectsParent.traverse((child) => {
       if (child instanceof THREE.Mesh) {
@@ -76,10 +81,16 @@ class Game {
     let limit = 200
     this.grid = new THREE.GridHelper(limit * 2, division, 'blue', 'blue')
 
+    const moveableX = []
     const moveableZ = []
     for (let i = 0; i <= division; i++) {
+      moveableX.push(0, 0, 1, 1) // move vertical lines only (1 - point is moveable)
       moveableZ.push(1, 1, 0, 0) // move horizontal lines only (1 - point is moveable)
     }
+    this.grid.geometry.setAttribute(
+      'moveableX',
+      new THREE.BufferAttribute(new Uint8Array(moveableX), 1)
+    )
     this.grid.geometry.setAttribute(
       'moveableZ',
       new THREE.BufferAttribute(new Uint8Array(moveableZ), 1)
@@ -88,6 +99,9 @@ class Game {
       uniforms: {
         speedZ: {
           value: this.speedZ,
+        },
+        translateX: {
+          value: this.translateX,
         },
         time: {
           value: 0,
@@ -100,8 +114,10 @@ class Game {
     uniform float time;
     uniform vec2 limits;
     uniform float speedZ;
+    uniform float translateX;
     
     attribute float moveableZ;
+    attribute float moveableX;
     
     varying vec3 vColor;
   
@@ -109,7 +125,12 @@ class Game {
       vColor = color;
       float limLen = limits.y - limits.x;
       vec3 pos = position;
-      if (floor(moveableZ + 0.5) > 0.5){ // if a point has "moveable" attribute = 1 
+      if (floor(moveableX + 0.5) > 0.5){ // if a point has "moveableX" attribute = 1 
+        float xDist = translateX * time;
+        float currXPos = mod((pos.x + xDist) - limits.x, limLen) + limits.x;
+        pos.x = currXPos;
+      } 
+      if (floor(moveableZ + 0.5) > 0.5){ // if a point has "moveableZ" attribute = 1 
         float zDist = speedZ * time;
         float currZPos = mod((pos.z + zDist) - limits.x, limLen) + limits.x;
         pos.z = currZPos;
