@@ -46,20 +46,25 @@ class Game {
         return
     }
 
-    this.speedX = newSpeedX
+    if (this.speedX !== newSpeedX) {
+      this.speedX = newSpeedX
+      this.rotateShip((-this.speedX * 20 * Math.PI) / 180, 0.8)
+    }
   }
 
   _keyup() {
     this.speedX = 0
+    this.rotateShip(0, 0.5)
   }
 
   rotateShip(targetRotation, delay) {
+    const $this = this
     this.rotationLerp = new Lerp(this.ship.rotation.z, targetRotation, delay)
       .onUpdate((value) => {
-        this.ship.rotation.z = value
+        $this.ship.rotation.z = value
       })
       .onFinish(() => {
-        this.rotationLerp = null
+        $this.rotationLerp = null
       })
   }
 
