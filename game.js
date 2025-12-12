@@ -8,14 +8,23 @@ class Game {
     this.speedX = 0
     this.translateX = 0
 
+    this.rotationLerp = null
+
     this.initializeScene(scene, camera)
 
     //bind callbacks
     document.addEventListener('keydown', this._keydown.bind(this))
     document.addEventListener('keyup', this._keyup.bind(this))
   }
+
   update() {
-    this.time += this.clock.getDelta()
+    const timeDelta = this.clock.getDelta()
+
+    this.time += timeDelta
+
+    if (this.rotationLerp !== null) {
+      this.rotationLerp.update(timeDelta)
+    }
 
     this.translateX += this.speedX * -0.05
 
@@ -42,6 +51,16 @@ class Game {
 
   _keyup() {
     this.speedX = 0
+  }
+
+  rotateShip(targetRotation, delay) {
+    this.rotationLerp = new Lerp(this.ship.rotation.z, targetRotation, delay)
+      .onUpdate((value) => {
+        this.ship.rotation.z = value
+      })
+      .onFinish(() => {
+        this.rotationLerp = null
+      })
   }
 
   updateGrid() {
