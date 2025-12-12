@@ -81,7 +81,7 @@ class Game {
         if (childZPos > 0) {
           const params = [
             child,
-            this.ship.position.x,
+            -this.translateX,
             -this.objectsParent.position.z,
           ]
           if (child.userData.type === 'obstacle') {
