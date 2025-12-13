@@ -2,11 +2,15 @@ class Game {
   OBSTACLE_PREFAB = new THREE.BoxBufferGeometry(1, 1, 1)
   OBSTACLE_MATERIAL = new THREE.MeshBasicMaterial({ color: 0xf252ad })
   BONUS_PREFAB = new THREE.SphereBufferGeometry(1, 12, 12)
+  COLLISION_THRESHOLD = 0.2
 
   constructor(scene, camera) {
     this.speedZ = 15
     this.speedX = 0
     this.translateX = 0
+
+    this.health = 100
+    this.score = 0
 
     this.rotationLerp = null
 
@@ -94,7 +98,26 @@ class Game {
     })
   }
 
-  checkCollision() {}
+  checkCollision() {
+    this.objectsParent.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        const childZPos = child.position.z + this.objectsParent.position.z
+
+        // threshold distance
+        const thresholdX = this.COLLISION_THRESHOLD + child.scale.x / 2
+        const thresholdZ = this.COLLISION_THRESHOLD + child.scale.z / 2
+
+        if (
+          childZPos > -thresholdZ &&
+          Math.abs(child.position.x + this.translateX) < thresholdX
+        ) {
+          if (child.userData.type === 'obstacle') {
+          } else {
+          }
+        }
+      }
+    })
+  }
 
   updateInfo() {}
 
