@@ -91,7 +91,8 @@ class Game {
           if (child.userData.type === 'obstacle') {
             this.setupObstacle(...params)
           } else {
-            this.setupBonus(...params)
+            const price = this.setupBonus(...params)
+            child.userData.price = price
           }
         }
       }
@@ -111,8 +112,19 @@ class Game {
           childZPos > -thresholdZ &&
           Math.abs(child.position.x + this.translateX) < thresholdX
         ) {
+          const params = [
+            child,
+            -this.translateX,
+            -this.objectsParent.position.z,
+          ]
           if (child.userData.type === 'obstacle') {
+            this.health -= 10
+            console.log('HEALTH: ', this.health)
+            this.setupObstacle(...params)
           } else {
+            this.score += child.userData.price
+            console.log('SCORE: ', this.score)
+            child.userData.price = this.setupBonus(...params)
           }
         }
       }
@@ -317,7 +329,7 @@ class Game {
       this.BONUS_PREFAB,
       new THREE.MeshBasicMaterial({ color: 0x000000 })
     )
-    this.setupBonus(obj)
+    const price = this.setupBonus(obj)
     obj.userData = { type: 'bonus' }
 
     this.objectsParent.add(obj)
@@ -338,6 +350,8 @@ class Game {
       obj.scale.y * 0.5,
       refZPos - 100 - this.randomFloat(0, 100)
     )
+
+    return price
   }
 
   randomFloat(min, max) {
