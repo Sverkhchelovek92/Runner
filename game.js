@@ -14,6 +14,9 @@ class Game {
 
     this.rotationLerp = null
 
+    this.uiHealth = document.getElementById('health')
+    this.uiScore = document.getElementById('score')
+
     this.initializeScene(scene, camera)
 
     //bind callbacks
@@ -120,10 +123,12 @@ class Game {
           if (child.userData.type === 'obstacle') {
             this.health -= 10
             console.log('HEALTH: ', this.health)
+            this.uiHealth.innerText = this.health
             this.setupObstacle(...params)
           } else {
             this.score += child.userData.price
             console.log('SCORE: ', this.score)
+            this.uiScore.innerText = this.score
             child.userData.price = this.setupBonus(...params)
           }
         }
@@ -330,7 +335,7 @@ class Game {
       new THREE.MeshBasicMaterial({ color: 0x000000 })
     )
     const price = this.setupBonus(obj)
-    obj.userData = { type: 'bonus' }
+    obj.userData = { type: 'bonus', price: price }
 
     this.objectsParent.add(obj)
   }
