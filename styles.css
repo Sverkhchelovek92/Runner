@@ -4,3 +4,10 @@ html {
   padding: 0;
   overflow: hidden;
 }
+
+#ui {
+  position: absolute;
+  left: 5;
+  top: 5;
+  color: white;
+}

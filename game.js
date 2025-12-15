@@ -127,6 +127,7 @@ class Game {
             this.setupObstacle(...params)
           } else {
             this.score += child.userData.price
+            this.score = Math.round(this.score)
             console.log('SCORE: ', this.score)
             this.uiScore.innerText = this.score
             child.userData.price = this.setupBonus(...params)
