@@ -16,6 +16,12 @@ class Game {
 
     this.uiHealth = document.getElementById('health')
     this.uiScore = document.getElementById('score')
+    this.uiDistance = document.getElementById('distance')
+
+    // initial values
+    this.uiScore.innerText = this.score
+    this.uiDistance.innerText = 0
+    this.uiHealth.value = this.health
 
     this.initializeScene(scene, camera)
 
@@ -123,7 +129,7 @@ class Game {
           if (child.userData.type === 'obstacle') {
             this.health -= 10
             console.log('HEALTH: ', this.health)
-            this.uiHealth.innerText = this.health
+            this.uiHealth.value = this.health
             this.setupObstacle(...params)
           } else {
             this.score += child.userData.price
@@ -137,7 +143,9 @@ class Game {
     })
   }
 
-  updateInfo() {}
+  updateInfo() {
+    this.uiDistance.innerText = Math.round(this.objectsParent.position.z)
+  }
 
   gameOver() {}
 
