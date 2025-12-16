@@ -8,8 +8,16 @@
   </head>
   <body>
     <div id="ui">
-      <div id="health"></div>
-      <div id="score"></div>
+      <div id="score-row">
+        Score:
+        <div id="score"></div>
+      </div>
+      <div id="distance-row">
+        Distance:
+        <div id="distance"></div>
+      </div>
+      <div>Ship's Health:</div>
+      <input id="health" type="range" min="0" max="100" disabled />
     </div>
     <script src="three.min.js"></script>
     <script src="lerp.js"></script>
