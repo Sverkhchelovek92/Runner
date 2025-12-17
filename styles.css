@@ -65,16 +65,44 @@ html {
   );
 }
 
-/* #health::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 10px;
-  -webkit-appearance: none;
-  background: #333333;
-  margin-top: -1px;
-} */
-
 #health::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 0;
   height: 0;
+}
+
+#intro-block {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+  color: white;
+}
+
+#intro-column {
+  text-align: center;
+}
+
+#intro-title {
+  font-size: 2rem;
+  margin-bottom: 1em;
+  font-family: monospace;
+}
+
+#start-btn {
+  background-color: black;
+  border: 1px solid white;
+  font-size: 1em;
+  padding: 0.5em;
+  cursor: pointer;
+  color: white;
+  font-family: monospace;
+}
+
+#start-btn:hover {
+  background-color: blue;
 }

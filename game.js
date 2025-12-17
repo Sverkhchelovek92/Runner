@@ -5,6 +5,8 @@ class Game {
   COLLISION_THRESHOLD = 0.2
 
   constructor(scene, camera) {
+    this.running = false
+
     this.speedZ = 15
     this.speedX = 0
     this.translateX = 0
@@ -24,6 +26,11 @@ class Game {
     this.uiHealth.value = this.health
     this.uiHealth.style.setProperty('--health', `${this.health}%`)
 
+    document.getElementById('start-btn').onclick = () => {
+      this.running = true
+      document.getElementById('intro-block').style.display = 'none'
+    }
+
     this.initializeScene(scene, camera)
 
     //bind callbacks
@@ -32,6 +39,8 @@ class Game {
   }
 
   update() {
+    if (!this.running) return
+
     const timeDelta = this.clock.getDelta()
 
     this.time += timeDelta
