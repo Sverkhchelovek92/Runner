@@ -22,6 +22,7 @@ class Game {
     this.uiScore.innerText = this.score
     this.uiDistance.innerText = 0
     this.uiHealth.value = this.health
+    this.uiHealth.style.setProperty('--health', `${this.health}%`)
 
     this.initializeScene(scene, camera)
 
@@ -145,6 +146,8 @@ class Game {
 
   updateInfo() {
     this.uiDistance.innerText = Math.round(this.objectsParent.position.z)
+    this.uiHealth.value = this.health
+    this.uiHealth.style.setProperty('--health', `${this.health}%`)
   }
 
   gameOver() {}
