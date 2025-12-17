@@ -10,4 +10,59 @@ html {
   left: 5;
   top: 5;
   color: white;
+  background-color: black;
+  border: 1px solid blue;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  font-family: monospace;
+}
+
+#score-row,
+#distance-row {
+  display: flex;
+}
+#score,
+#distance {
+  margin-left: 0.25rem;
+}
+
+#health {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: transparent;
+  pointer-events: none;
+  margin-left: 0rem;
+}
+
+#health::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+}
+
+#health::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  border: none;
+}
+
+#health::-webkit-slider-runnable-track {
+  height: 10px;
+  background: linear-gradient(
+    to right,
+    #00ff6a var(--health, 100%),
+    #3a3a3a var(--health, 100%)
+  );
+}
+
+#health::-moz-range-track {
+  height: 10px;
+  background: #3a3a3a;
+}
+
+#health::-moz-range-progress {
+  height: 10px;
+  background: #00ff6a;
 }
