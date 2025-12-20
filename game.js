@@ -20,6 +20,10 @@ class Game {
     this.uiScore = document.getElementById('score')
     this.uiDistance = document.getElementById('distance')
 
+    this.uiGameOverBlock = document.getElementById('game-over-block')
+    this.uiGameOverScore = document.getElementById('game-over-score')
+    this.uiGameOverDistance = document.getElementById('game-over-distance')
+
     // initial values
     this.uiScore.innerText = this.score
     this.uiDistance.innerText = 0
@@ -162,6 +166,11 @@ class Game {
 
   gameOver() {
     this.running = false
+    this.uiGameOverScore.innerText = this.score
+    this.uiGameOverDistance.innerText = Math.round(
+      this.objectsParent.position.z
+    )
+    this.uiGameOverBlock.style.display = 'grid'
   }
 
   createGrid(scene) {

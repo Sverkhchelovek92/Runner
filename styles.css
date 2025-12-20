@@ -71,7 +71,8 @@ html {
   height: 0;
 }
 
-#intro-block {
+#intro-block,
+#game-over-block {
   display: grid;
   place-items: center;
   position: absolute;
@@ -81,19 +82,27 @@ html {
   left: 0;
   background-color: transparent;
   color: white;
+  font-family: monospace;
 }
 
-#intro-column {
+#game-over-block {
+  display: none;
+}
+
+#intro-column,
+#game-over-column {
   text-align: center;
 }
 
-#intro-title {
+#intro-title,
+#game-over-title {
   font-size: 2rem;
   margin-bottom: 1em;
   font-family: monospace;
 }
 
-#start-btn {
+#start-btn,
+#replay-btn {
   background-color: black;
   border: 1px solid white;
   font-size: 1em;
@@ -103,6 +112,12 @@ html {
   font-family: monospace;
 }
 
-#start-btn:hover {
+#start-btn:hover,
+#replay-btn:hover {
   background-color: blue;
+}
+
+#game-over-score-row,
+#game-over-distance-row {
+  margin-bottom: 0.5em;
 }
