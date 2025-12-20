@@ -141,6 +141,7 @@ class Game {
             console.log('HEALTH: ', this.health)
             this.uiHealth.value = this.health
             this.setupObstacle(...params)
+            if (this.health <= 0) this.gameOver()
           } else {
             this.score += child.userData.price
             this.score = Math.round(this.score)
@@ -159,7 +160,9 @@ class Game {
     this.uiHealth.style.setProperty('--health', `${this.health}%`)
   }
 
-  gameOver() {}
+  gameOver() {
+    this.running = false
+  }
 
   createGrid(scene) {
     let division = 100
