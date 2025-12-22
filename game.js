@@ -15,7 +15,7 @@ class Game {
 
     this.scene = scene
     this.camera = camera
-    this.reset()
+    this.reset(false)
 
     this.uiHealth.style.setProperty('--health', `${this.health}%`)
 
@@ -26,7 +26,7 @@ class Game {
 
     document.getElementById('replay-btn').onclick = () => {
       this.running = true
-      document.this.uiGameOverBlock.style.display = 'none'
+      this.uiGameOverBlock.style.display = 'none'
     }
 
     //bind callbacks
@@ -52,7 +52,7 @@ class Game {
     this.updateInfo()
   }
 
-  reset() {
+  reset(replay) {
     this.running = false
 
     this.speedZ = 15
@@ -71,7 +71,7 @@ class Game {
     this.uiDistance.innerText = 0
     this.uiHealth.value = this.health
 
-    this.initializeScene(this.scene, this.camera)
+    this.initializeScene(this.scene, this.camera, replay)
   }
 
   _keydown(event) {
@@ -185,7 +185,7 @@ class Game {
       this.objectsParent.position.z
     )
     this.uiGameOverBlock.style.display = 'grid'
-    this.reset()
+    this.reset(true)
   }
 
   createGrid(scene) {
@@ -332,23 +332,36 @@ class Game {
     reactorLight2.position.set(0.15, 0, 0.11)
   }
 
-  initializeScene() {
-    this.createShip(scene)
-    this.createGrid(scene)
+  initializeScene(scene, camera, replay) {
+    if (!replay) {
+      //first play
+      this.createShip(scene)
+      this.createGrid(scene)
 
-    this.objectsParent = new THREE.Group()
-    scene.add(this.objectsParent)
+      this.objectsParent = new THREE.Group()
+      scene.add(this.objectsParent)
 
-    for (let i = 0; i < 10; i++) {
-      this.spawnObstacle()
+      for (let i = 0; i < 10; i++) {
+        this.spawnObstacle()
+      }
+      for (let i = 0; i < 10; i++) {
+        this.spawnBonus()
+      }
+
+      camera.position.z = 5
+      camera.rotateX((-20 * Math.PI) / 180)
+      camera.position.set(0, 1.5, 2)
+    } else {
+      // replay
+      this.objectsParent.traverse((item) => {
+        if (item instanceof THREE.Mesh) {
+          if (item.userData.type === 'obstacle') this.setupObstacle(item)
+          else item.userData.price = this.setupBonus(item)
+        } else {
+          item.position.set(0, 0, 0)
+        }
+      })
     }
-    for (let i = 0; i < 10; i++) {
-      this.spawnBonus()
-    }
-
-    camera.position.z = 5
-    camera.rotateX((-20 * Math.PI) / 180)
-    camera.position.set(0, 1.5, 2)
   }
 
   spawnObstacle() {
