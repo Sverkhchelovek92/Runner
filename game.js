@@ -5,17 +5,6 @@ class Game {
   COLLISION_THRESHOLD = 0.2
 
   constructor(scene, camera) {
-    this.running = false
-
-    this.speedZ = 15
-    this.speedX = 0
-    this.translateX = 0
-
-    this.health = 100
-    this.score = 0
-
-    this.rotationLerp = null
-
     this.uiHealth = document.getElementById('health')
     this.uiScore = document.getElementById('score')
     this.uiDistance = document.getElementById('distance')
@@ -24,10 +13,10 @@ class Game {
     this.uiGameOverScore = document.getElementById('game-over-score')
     this.uiGameOverDistance = document.getElementById('game-over-distance')
 
-    // initial values
-    this.uiScore.innerText = this.score
-    this.uiDistance.innerText = 0
-    this.uiHealth.value = this.health
+    this.scene = scene
+    this.camera = camera
+    this.reset()
+
     this.uiHealth.style.setProperty('--health', `${this.health}%`)
 
     document.getElementById('start-btn').onclick = () => {
@@ -35,7 +24,10 @@ class Game {
       document.getElementById('intro-block').style.display = 'none'
     }
 
-    this.initializeScene(scene, camera)
+    document.getElementById('replay-btn').onclick = () => {
+      this.running = true
+      document.this.uiGameOverBlock.style.display = 'none'
+    }
 
     //bind callbacks
     document.addEventListener('keydown', this._keydown.bind(this))
@@ -58,6 +50,28 @@ class Game {
     this.updateGrid()
     this.checkCollision()
     this.updateInfo()
+  }
+
+  reset() {
+    this.running = false
+
+    this.speedZ = 15
+    this.speedX = 0
+    this.translateX = 0
+
+    this.time = 0
+    this.clock = new THREE.Clock()
+
+    this.health = 100
+    this.score = 0
+
+    this.rotationLerp = null
+
+    this.uiScore.innerText = this.score
+    this.uiDistance.innerText = 0
+    this.uiHealth.value = this.health
+
+    this.initializeScene(this.scene, this.camera)
   }
 
   _keydown(event) {
@@ -171,6 +185,7 @@ class Game {
       this.objectsParent.position.z
     )
     this.uiGameOverBlock.style.display = 'grid'
+    this.reset()
   }
 
   createGrid(scene) {
@@ -246,9 +261,6 @@ class Game {
     })
 
     scene.add(this.grid)
-
-    this.time = 0
-    this.clock = new THREE.Clock()
   }
 
   createShip(scene) {
